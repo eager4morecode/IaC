@@ -1,4 +1,4 @@
-!/bin/bash
+#!/bin/bash
 
 #Scipt will ask for user name, if no user exist will create new user
 
