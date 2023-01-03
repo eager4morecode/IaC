@@ -31,7 +31,7 @@ security_group_id = aws_security_group.db_security_group.id
 
 
 #create aws rds subnet groups
-resource "aws_db_subnet_group" "my_database_subnet_group" {
+resource "aws_db_subnet_group" "my_capstone-db" {
 name = "mydbsg"
 subnet_ids = [data.terraform_remote_state.vpc.outputs.private_subnets[2], data.terraform_remote_state.vpc.outputs.private_subnets[1]]
 }
@@ -42,16 +42,16 @@ resource "aws_db_instance" "my_database_instance" {
 allocated_storage = 150
 storage_type = "gp2"
 engine = "mysql"
-engine_version = "5.7"
+engine_version = "8.0"
 instance_class = "db.t2.large"
 port = 3306
 vpc_security_group_ids = [aws_security_group.db_security_group.id]
-db_subnet_group_name = aws_db_subnet_group.my_database_subnet_group.name
+db_subnet_group_name = aws_db_subnet_group.my_capstone_subnet_group.name
 name = "mydb_drupal"
 identifier = "mysqldb_drupal"
 username = "myuser"
-password = "mypassword"
-parameter_group_name = "default.mysql5.7"
+password = "userdemo"
+parameter_group_name = "default.mysql8.0"
 skip_final_snapshot = true
 }
 
