@@ -1,0 +1,93 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2707
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red88\green138\blue67;\red255\green255\blue255;\red202\green202\blue202;
+\red67\green192\blue160;\red67\green179\blue255;\red141\green212\blue254;\red194\green126\blue101;\red71\green137\blue205;
+\red212\green213\blue154;\red167\green197\blue151;\red183\green111\blue179;}
+{\*\expandedcolortbl;;\cssrgb\c41525\c59950\c33208;\cssrgb\c100000\c100000\c100000;\cssrgb\c83229\c83229\c83125;
+\cssrgb\c30610\c78876\c69022;\cssrgb\c31226\c75987\c100000;\cssrgb\c61361\c86489\c99746;\cssrgb\c80778\c56830\c46925;\cssrgb\c33936\c61427\c84130;
+\cssrgb\c86261\c86245\c66529;\cssrgb\c71008\c80807\c65805;\cssrgb\c77331\c52624\c75301;}
+\margl1440\margr1440\vieww28600\viewh14800\viewkind0
+\deftab720
+\pard\pardeftab720\partightenfactor0
+
+\f0\fs24 \cf2 \cb3 \expnd0\expndtw0\kerning0
+\outl0\strokewidth0 \strokec2 #create security group for db\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 resource\cf4 \strokec4  \cf6 \strokec6 "aws_security_group"\cf4 \strokec4  \cf6 \strokec6 "db_security_group"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 name \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "db_security_group"\cf4 \strokec4 \
+\cf7 \strokec7 description \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "Allow all inbound traffic"\cf4 \strokec4 \
+\cf7 \strokec7 vpc_id \cf4 \strokec4 =\cf7 \strokec7  \cf9 \strokec9 data\cf4 \strokec4 .\cf7 \strokec7 terraform_remote_state\cf4 \strokec4 .\cf7 \strokec7 vpc\cf4 \strokec4 .\cf7 \strokec7 outputs\cf4 \strokec4 .\cf7 \strokec7 vpc_id\cf4 \strokec4 \
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #create security group ingress rule for db\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 resource\cf4 \strokec4  \cf6 \strokec6 "aws_security_group_rule"\cf4 \strokec4  \cf6 \strokec6 "db_ingress"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 count \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 length\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 )\
+\cf7 \strokec7 type \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "ingress"\cf4 \strokec4 \
+\cf7 \strokec7 protocol \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "tcp"\cf4 \strokec4 \
+\cf7 \strokec7 cidr_blocks \cf4 \strokec4 =\cf7 \strokec7  \cf4 \strokec4 [\cf8 \strokec8 "0.0.0.0/0"\cf4 \strokec4 ]\
+\cf7 \strokec7 from_port \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 element\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 , \cf9 \strokec9 count\cf4 \strokec4 .\cf7 \strokec7 index\cf4 \strokec4 )\
+\cf7 \strokec7 to_port \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 element\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 , \cf9 \strokec9 count\cf4 \strokec4 .\cf7 \strokec7 index\cf4 \strokec4 )\
+\cf7 \strokec7 security_group_id \cf4 \strokec4 =\cf7 \strokec7  aws_security_group\cf4 \strokec4 .\cf7 \strokec7 db_security_group\cf4 \strokec4 .\cf7 \strokec7 id\cf4 \strokec4 \
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #create security group egress rule for db\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 resource\cf4 \strokec4  \cf6 \strokec6 "aws_security_group_rule"\cf4 \strokec4  \cf6 \strokec6 "db_egress"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 count \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 length\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 )\
+\cf7 \strokec7 type \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "egress"\cf4 \strokec4 \
+\cf7 \strokec7 protocol \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "tcp"\cf4 \strokec4 \
+\cf7 \strokec7 cidr_blocks \cf4 \strokec4 =\cf7 \strokec7  \cf4 \strokec4 [\cf8 \strokec8 "0.0.0.0/0"\cf4 \strokec4 ]\
+\cf7 \strokec7 from_port \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 element\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 , \cf9 \strokec9 count\cf4 \strokec4 .\cf7 \strokec7 index\cf4 \strokec4 )\
+\cf7 \strokec7 to_port \cf4 \strokec4 =\cf7 \strokec7  \cf10 \strokec10 element\cf4 \strokec4 (\cf9 \strokec9 var\cf4 \strokec4 .\cf7 \strokec7 db_ports\cf4 \strokec4 , \cf9 \strokec9 count\cf4 \strokec4 .\cf7 \strokec7 index\cf4 \strokec4 )\
+\cf7 \strokec7 security_group_id \cf4 \strokec4 =\cf7 \strokec7  aws_security_group\cf4 \strokec4 .\cf7 \strokec7 db_security_group\cf4 \strokec4 .\cf7 \strokec7 id\cf4 \strokec4 \
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #create aws rds subnet groups\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 resource\cf4 \strokec4  \cf6 \strokec6 "aws_db_subnet_group"\cf4 \strokec4  \cf6 \strokec6 "my_database_subnet_group"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 name \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "mydbsg"\cf4 \strokec4 \
+\cf7 \strokec7 subnet_ids \cf4 \strokec4 =\cf7 \strokec7  \cf4 \strokec4 [\cf9 \strokec9 data\cf4 \strokec4 .\cf7 \strokec7 terraform_remote_state\cf4 \strokec4 .\cf7 \strokec7 vpc\cf4 \strokec4 .\cf7 \strokec7 outputs\cf4 \strokec4 .\cf7 \strokec7 private_subnets\cf4 \strokec4 [\cf11 \strokec11 2\cf4 \strokec4 ], \cf9 \strokec9 data\cf4 \strokec4 .\cf7 \strokec7 terraform_remote_state\cf4 \strokec4 .\cf7 \strokec7 vpc\cf4 \strokec4 .\cf7 \strokec7 outputs\cf4 \strokec4 .\cf7 \strokec7 private_subnets\cf4 \strokec4 [\cf11 \strokec11 1\cf4 \strokec4 ]]\
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #create aws mysql rds instance\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 resource\cf4 \strokec4  \cf6 \strokec6 "aws_db_instance"\cf4 \strokec4  \cf6 \strokec6 "my_database_instance"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 allocated_storage \cf4 \strokec4 =\cf7 \strokec7  \cf11 \strokec11 150\cf4 \strokec4 \
+\cf7 \strokec7 storage_type \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "gp2"\cf4 \strokec4 \
+\cf7 \strokec7 engine \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "mysql"\cf4 \strokec4 \
+\cf7 \strokec7 engine_version \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "5.7"\cf4 \strokec4 \
+\cf7 \strokec7 instance_class \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "db.t2.large"\cf4 \strokec4 \
+\cf7 \strokec7 port \cf4 \strokec4 =\cf7 \strokec7  \cf11 \strokec11 3306\cf4 \strokec4 \
+\cf7 \strokec7 vpc_security_group_ids \cf4 \strokec4 =\cf7 \strokec7  \cf4 \strokec4 [\cf7 \strokec7 aws_security_group\cf4 \strokec4 .\cf7 \strokec7 db_security_group\cf4 \strokec4 .\cf7 \strokec7 id\cf4 \strokec4 ]\
+\cf7 \strokec7 db_subnet_group_name \cf4 \strokec4 =\cf7 \strokec7  aws_db_subnet_group\cf4 \strokec4 .\cf7 \strokec7 my_database_subnet_group\cf4 \strokec4 .\cf7 \strokec7 name\cf4 \strokec4 \
+\cf7 \strokec7 name \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "mydb_drupal"\cf4 \strokec4 \
+\cf7 \strokec7 identifier \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "mysqldb_drupal"\cf4 \strokec4 \
+\cf7 \strokec7 username \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "myuser"\cf4 \strokec4 \
+\cf7 \strokec7 password \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "mypassword"\cf4 \strokec4 \
+\cf7 \strokec7 parameter_group_name \cf4 \strokec4 =\cf7 \strokec7  \cf8 \strokec8 "default.mysql5.7"\cf4 \strokec4 \
+\cf7 \strokec7 skip_final_snapshot \cf4 \strokec4 =\cf7 \strokec7  \cf12 \strokec12 true\cf4 \strokec4 \
+\}\
+\
+\
+\pard\pardeftab720\partightenfactor0
+\cf2 \strokec2 #output webserver and dbserver address\cf4 \strokec4 \
+\pard\pardeftab720\partightenfactor0
+\cf5 \strokec5 output\cf4 \strokec4  \cf6 \strokec6 "db_server_address"\cf4 \strokec4  \{\
+\pard\pardeftab720\partightenfactor0
+\cf7 \strokec7 value \cf4 \strokec4 =\cf7 \strokec7  aws_db_instance\cf4 \strokec4 .\cf7 \strokec7 my_database_instance\cf4 \strokec4 .\cf7 \strokec7 address\cf4 \strokec4 \
+\}\
+}
